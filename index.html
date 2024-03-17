@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the page  -->
+    <title>AES Text Encryption/Decryption</title>
+</head>
+<body>
+    <!-- Container for the page content  -->
+    <div class="container">
+        <!-- Heading for the application -->
+        <h1>AES Text Encryption/Decryption</h1>
+        <!-- Text area for input -->
+        <textarea id="inputText" placeholder="Enter text to encrypt or decrypt"></textarea>
+        <!-- Button to trigger encryption  -->
+        <button onclick="encryptText()">Encrypt</button>
+        <!-- Button to trigger decryption  -->
+        <button onclick="decryptText()">Decrypt</button>
+        <!-- Text area to display the result -->
+        <textarea id="outputText" placeholder="Result" readonly></textarea>
+    </div>
+    <!-- Javascript code for encryption/decryption -->
+    <script>
+        //Function to handle text encryption
+        async function encryptText() {
+            //Get the input text 
+            const inputText = document.getElementById("inputText").value;
+            // Send a POST request to the encryption endpoint
+            const response = await fetch('http://localhost:3000/encrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: inputText }) // Send input text as JSON
+            });
+            // Get the encrypted text from the response
+            const result = await response.json();
+             // Display the encrypted text in the output text area
+            document.getElementById("outputText").value = result.encryptedText;
+        }
+        // Function to handle text decryption
+        async function decryptText() {
+             // Get the input text
+            const inputText = document.getElementById("inputText").value;
+            // Send a POST request to the decryption endpoint
+            const response = await fetch('http://localhost:3000/decrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: inputText })  // Send input text as JSON
+            });
+            // Get the decrypted text from the response
+            const result = await response.json();
+            // Display the decrypted text in the output text area
+            document.getElementById("outputText").value = result.decryptedText;
+        }
+    </script>
+</body>
+</html>
